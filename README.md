@@ -4,8 +4,7 @@ This repo contains:
 
 - `/epiphancloud`: Python wrapper for Epiphan Cloud API
 - `/docs`: API reference
-- `/device_api.ipynb`: Python notebook with API tutorial
-- `/device_api.html`: static version of the tutorial ([link](http://htmlpreview.github.io/?https://github.com/epiphan-video/epiphancloud_api/blob/master/device_api.html))
+- `/examples/full_lifecycle.py`: Usage example
 
 ## Installation
 
@@ -13,15 +12,6 @@ This repo contains:
 $ git clone https://github.com/epiphan-video/epiphancloud_api.git
 $ cd epiphancloud_api
 $ pip install -r requirements.txt
-```
-
-## Running the interactive tutorial
-
-Jupyter has to be installed.
-
-```
-$ cd epiphancloud_api
-$ python -m notebook
 ```
 
 ## Documentation
