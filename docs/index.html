@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>AV Studio Developer's Guide</title>
+    <title>Epiphan Cloud Developer's Guide</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -243,7 +243,7 @@
             <a href="#pairing-a-real-device" class="toc-h1 toc-link" data-title="Pairing a Real Device">Pairing a Real Device</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#switching-the-webcaster-x2-device-to-av-studio-mode" class="toc-h2 toc-link" data-title="Switching the Webcaster X2 Device to AV Studio Mode">Switching the Webcaster X2 Device to AV Studio Mode</a>
+                    <a href="#switching-the-webcaster-x2-device-to-av-studio-mode" class="toc-h2 toc-link" data-title="Switching the Webcaster X2 Device to Epiphan Cloud Mode">Switching the Webcaster X2 Device to Epiphan Cloud Mode</a>
                   </li>
                   <li>
                     <a href="#pairing-the-device" class="toc-h2 toc-link" data-title="Pairing the Device">Pairing the Device</a>
@@ -303,28 +303,28 @@
           </li>
       </ul>
         <ul class="toc-footer">
-            <li><a href='https://go.avstudio.com'>avstudio.com</a></li>
+            <li><a href='https://go.epiphancloud.com'>epiphancloud.com</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the AV Studio API! You can use our API to pair, control and monitor Epiphan devices.</p>
+<p>Welcome to the Epiphan Cloud API! You can use our API to pair, control and monitor Epiphan devices.</p>
 
 <p>We have language bindings in bash and Python. You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
 <h1 id='big-picture'>Big picture</h1>
-<p>Each encoder device has a long poll connection to AV Studio and waits for commands. Initially, all devices are <em>unpaired</em>, which means that they are not associated with any AV Studio account. To pair a device, log in to your AV Studio account and send a pairing command to AV Studio using the pairing code. AV Studio finds the device that has this code and connects your account to it.</p>
-<h1 id='authorization'>Authorization</h1><pre class="highlight shell tab-shell"><code>curl https://go.avstudio.com/front/api/v2/users/me <span class="se">\</span>
+<p>Each encoder device has a long poll connection to Epiphan Cloud and waits for commands. Initially, all devices are <em>unpaired</em>, which means that they are not associated with any Epiphan Cloud account. To pair a device, log in to your Epiphan Cloud account and send a pairing command to Epiphan Cloud using the pairing code. Epiphan Cloud finds the device that has this code and connects your account to it.</p>
+<h1 id='authorization'>Authorization</h1><pre class="highlight shell tab-shell"><code>curl https://go.epiphancloud.com/front/api/v2/users/me <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="n">api</span> <span class="o">=</span> <span class="n">AVStudioAPI2</span><span class="p">()</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">api</span> <span class="o">=</span> <span class="n">EpiphanCloudAPI2</span><span class="p">()</span>
 <span class="n">api</span><span class="o">.</span><span class="n">setAuthToken</span><span class="p">(</span><span class="n">TOKEN</span><span class="p">)</span>
 </code></pre>
-<p>AV Studio uses bearer token authorization (<a href="https://tools.ietf.org/html/rfc6750">rfc6750</a>). HTTP API requests must include auth token in their HTTP headers: </p>
+<p>Epiphan Cloud uses bearer token authorization (<a href="https://tools.ietf.org/html/rfc6750">rfc6750</a>). HTTP API requests must include auth token in their HTTP headers: </p>
 
 <p><code>Authorization: Bearer &lt;TOKEN&gt;</code></p>
 <h2 id='issuing-a-token'>Issuing a token</h2>
-<p>Tokens are issued in &quot;Integrations&quot; tab in your AV Studio team settings:</p>
+<p>Tokens are issued in &quot;Integrations&quot; tab in your Epiphan Cloud team settings:</p>
 
 <p><video width="100%" height="auto" src="images/new_token.mp4" controls/></p>
 
@@ -336,7 +336,7 @@
 <li><p>Tokens do not expire.</p></li>
 </ul>
 <h1 id='getting-all-devices'>Getting All Devices</h1>
-<p>There&#39;re two devices in a newly created AV Studio account, let&#39;s retrieve them:</p>
+<p>There&#39;re two devices in a newly created Epiphan Cloud account, let&#39;s retrieve them:</p>
 <pre class="highlight python tab-python"><code><span class="n">devices</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">get_all</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">d</span><span class="p">[</span><span class="s">"Id"</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s">"Name"</span><span class="p">]</span>
@@ -344,7 +344,7 @@
 <span class="c"># Output:</span>
 <span class="c"># demo_0_d3d68f3c My First Demo Device</span>
 <span class="c"># demo_1_4e0a964a-b350-435f-82c9-de6ab5188af2 My Second Demo Device</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl https://go.avstudio.com/front/api/v2/devices <span class="se">\</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl https://go.epiphancloud.com/front/api/v2/devices <span class="se">\</span>
     -H <span class="s2">"Authorization: Bearer TOKEN"</span>
 </code></pre>
 <blockquote>
@@ -366,7 +366,7 @@
 </span></code></pre>
 <p><code>GET /front/api/v2/devices</code></p>
 <h1 id='getting-a-specific-device'>Getting a Specific Device</h1><pre class="highlight python tab-python"><code><span class="n">device</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"demo_0_d3d68f3c"</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl https://go.avstudio.com/front/api/v2/devices/demo_0_d3d68f3c <span class="se">\</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl https://go.epiphancloud.com/front/api/v2/devices/demo_0_d3d68f3c <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span>
 </code></pre>
 <blockquote>
@@ -401,23 +401,23 @@
 </tbody></table>
 <h1 id='pairing-a-real-device'>Pairing a Real Device</h1>
 <p>Let&#39;s pair a real device.</p>
-<h3 id='switching-the-webcaster-x2-device-to-av-studio-mode'>Switching the Webcaster X2 Device to AV Studio Mode</h3>
+<h3 id='switching-the-webcaster-x2-device-to-av-studio-mode'>Switching the Webcaster X2 Device to Epiphan Cloud Mode</h3>
 <p>There are two ways to switch modes:</p>
 
 <p>Double press the power button on the device until the LCD screen shows Epiphan logo:</p>
 
-<p><img src="images/front_screen_pairing_code.jpg" title="Swtiching to AV Studio using LCD screen" alt="Swtiching to AV Studio using LCD screen" /></p>
+<p><img src="images/front_screen_pairing_code.jpg" title="Swtiching to Epiphan Cloud using LCD screen" alt="Swtiching to Epiphan Cloud using LCD screen" /></p>
 
-<p>Or select AV Studio using a monitor and attached USB mouse:</p>
+<p>Or select Epiphan Cloud using a monitor and attached USB mouse:</p>
 
-<p><img src="images/switch_to_avstudio.gif" title="Swtiching to AV Studio using a monitor and a mouse" alt="Swtiching to AV Studio using a monitor and a mouse" /></p>
+<p><img src="images/switch_to_epiphancloud.gif" title="Swtiching to Epiphan Cloud using a monitor and a mouse" alt="Swtiching to Epiphan Cloud using a monitor and a mouse" /></p>
 <h3 id='pairing-the-device'>Pairing the Device</h3>
 <p>To pair a device we use the following endpoint:</p>
 
 <p><code>POST /front/api/v2/devices</code></p>
 <pre class="highlight python tab-python"><code><span class="n">r</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">"5cf06c29"</span><span class="p">,</span> <span class="s">"NEW DEVICE"</span><span class="p">)</span>
 <span class="n">device_id</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s">"ID"</span><span class="p">]</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl -X POST https://go.avstudio.com/front/api/v2/devices <span class="se">\</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl -X POST https://go.epiphancloud.com/front/api/v2/devices <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span> <span class="se">\</span>
   -d <span class="s1">'{"DeviceID": "5cf06c29", "Name": "NEW DEVICE"}'</span>
 </code></pre>
@@ -434,7 +434,7 @@
 <p>e.g. setting bitrate to 1 Mbit/s:</p>
 </blockquote>
 <pre class="highlight python tab-python"><code><span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="n">deviceId</span><span class="p">,</span> <span class="s">"setparam:bitrate=1000"</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl https://go.avstudio.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl https://go.epiphancloud.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span> <span class="se">\</span>
   --data-binary <span class="s1">'{"cmd": "setparam:bitrate=1000"}'</span>
 </code></pre>
@@ -444,7 +444,7 @@
 <h2 id='setparam'>setparam:</h2><pre class="highlight python tab-python"><code><span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">deviceId</span><span class="p">)[</span><span class="s">"Telemetry"</span><span class="p">][</span><span class="s">"settings"</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 
 <span class="c"># Output: ['resolution', 'bitrate']</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl https://go.avstudio.com/front/api/v2/devices/DEVICEID <span class="se">\</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl https://go.epiphancloud.com/front/api/v2/devices/DEVICEID <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span> <span class="se">\</span>
 | jq <span class="s1">'.Telemetry.settings | keys'</span>
 
@@ -483,34 +483,34 @@
 </tbody></table>
 <h2 id='recording-start-stop'>recording.start/stop</h2><pre class="highlight python tab-python"><code><span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="n">deviceId</span><span class="p">,</span> <span class="s">"recording.start"</span><span class="p">)</span>
 <span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="n">deviceId</span><span class="p">,</span> <span class="s">"recording.stop"</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.avstudio.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
+</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.epiphancloud.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span> <span class="se">\</span>
   --data-binary <span class="s1">'{"cmd": "recording.start"}'</span>
 
- curl https://go.avstudio.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
+ curl https://go.epiphancloud.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span> <span class="se">\</span>
   --data-binary <span class="s1">'{"cmd": "recording.stop"}'</span>
 </code></pre>
 <p>These commands start and stop recording. See &quot;<a href="/#recording">Recording</a>&quot; section for details.</p>
 <h2 id='afu-start-stop'>afu.start/stop</h2><pre class="highlight python tab-python"><code><span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="n">deviceId</span><span class="p">,</span> <span class="s">"afu.start"</span><span class="p">)</span>
 <span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="n">deviceId</span><span class="p">,</span> <span class="s">"afu.stop"</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.avstudio.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
+</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.epiphancloud.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span> <span class="se">\</span>
   --data-binary <span class="s1">'{"cmd": "afu.start"}'</span>
 
- curl https://go.avstudio.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
+ curl https://go.epiphancloud.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span> <span class="se">\</span>
   --data-binary <span class="s1">'{"cmd": "afu.stop"}'</span>
 </code></pre>
-<p>These commands start and stop uploading the recording footage to AV Studio. See &quot;<a href="/#recording">Recording</a>&quot; section for details.</p>
+<p>These commands start and stop uploading the recording footage to Epiphan Cloud. See &quot;<a href="/#recording">Recording</a>&quot; section for details.</p>
 <h2 id='footage-clear'>footage.clear</h2><pre class="highlight python tab-python"><code><span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="n">deviceId</span><span class="p">,</span> <span class="s">"footage.clear"</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.avstudio.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
+</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.epiphancloud.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span> <span class="se">\</span>
   --data-binary <span class="s1">'{"cmd": "footage.clear"}'</span>
 </code></pre>
 <p>This command deletes recorded footage on the device (the footage that is not uploaded yet). See &quot;<a href="/#recording">Recording</a>&quot; section for details.</p>
 <h2 id='rtmp-start-url'>rtmp.start:url</h2><pre class="highlight python tab-python"><code><span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="n">deviceId</span><span class="p">,</span> <span class="s">"rtmp.start:rtmp://10.1.2.16/live/test"</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.avstudio.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
+</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.epiphancloud.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span> <span class="se">\</span>
   --data-binary <span class="s1">'{"cmd": "rtmp.start:rtmp://10.1.2.16/live/test"}'</span>
 </code></pre>
@@ -531,35 +531,35 @@
 </span></code></pre>
 <p>This command starts an RTMP stream to a given RTMP url.</p>
 <h2 id='rtmp-stop'>rtmp.stop</h2><pre class="highlight python tab-python"><code><span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="n">deviceId</span><span class="p">,</span> <span class="s">"rtmp.stop"</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.avstudio.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
+</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.epiphancloud.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span> <span class="se">\</span>
   --data-binary <span class="s1">'{"cmd": "rtmp.stop"}'</span>
 </code></pre>
 <p>To stop the RTMP stream that was started by <code>rtmp.start</code></p>
 <h2 id='firmware-update'>firmware.update</h2><pre class="highlight python tab-python"><code><span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="n">deviceId</span><span class="p">,</span> <span class="s">"firmware.update"</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.avstudio.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
+</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.epiphancloud.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span> <span class="se">\</span>
   --data-binary <span class="s1">'{"cmd": "firmware.update"}'</span>
 </code></pre>
 <p>Starts a firmware update if a more recent firmware version is available.</p>
 <h2 id='unpair'>unpair</h2><pre class="highlight python tab-python"><code><span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="n">deviceId</span><span class="p">,</span> <span class="s">"unpair"</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.avstudio.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
+</code></pre><pre class="highlight shell tab-shell"><code> curl https://go.epiphancloud.com/front/api/v2/devices/DEVICEID/task <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span> <span class="se">\</span>
   --data-binary <span class="s1">'{"cmd": "unpair"}'</span>
 </code></pre>
 <p>Unpairs the device from the account that it&#39;s paired to.</p>
 <h1 id='recording'>Recording</h1>
-<p>Webcaster X2 devices can record footage and upload it to the AV Studio account, to which they are paired.</p>
+<p>Webcaster X2 devices can record footage and upload it to the Epiphan Cloud account, to which they are paired.</p>
 
 <p>On Webcaster X2 stream is recorded to SD card, or internal flash memory, if SD card is full or is not available.</p>
 
-<p>Recorder is started by <code>recording.start</code> and stopped by <code>recording.stop</code> commands. If uploading is enabled by <code>afu.start</code> command, it gets uploaded to AV Studio and deleted from device storage.</p>
+<p>Recorder is started by <code>recording.start</code> and stopped by <code>recording.stop</code> commands. If uploading is enabled by <code>afu.start</code> command, it gets uploaded to Epiphan Cloud and deleted from device storage.</p>
 
 <p>If uploading is disabled by <code>afu.stop</code> command, footage stays on device, until it&#39;s deleted by <code>footage.clear</code> command, or uploading is started.</p>
 
 <p>Recording, streaming and uploading can run at the same time.</p>
 
-<p>The footage, uploaded to AV Studio, is billed according to the account&#39;s plan.</p>
+<p>The footage, uploaded to Epiphan Cloud, is billed according to the account&#39;s plan.</p>
 <h2 id='recorded-footage-on-device'>Recorded Footage on Device</h2><pre class="highlight python tab-python"><code><span class="n">api</span><span class="o">.</span><span class="n">Devices</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">deviceId</span><span class="p">)[</span><span class="s">"Telemetry"</span><span class="p">][</span><span class="s">"state"</span><span class="p">][</span><span class="s">"afu"</span><span class="p">]</span>
 
 <span class="c"># Output:</span>
@@ -569,7 +569,7 @@
 <span class="c">#   "speed": 0,                # Uploading speed (if footage is being uploaded)</span>
 <span class="c">#   "state": False             # True if uploading enabled, False otherwise</span>
 <span class="c"># }</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl https://go.avstudio.com/front/api/v2/devices/DEVICEID <span class="se">\</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl https://go.epiphancloud.com/front/api/v2/devices/DEVICEID <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span> <span class="se">\</span>
 | jq <span class="s1">'.Telemetry.state.afu'</span>
 
@@ -582,7 +582,7 @@
 <span class="c"># }</span>
 </code></pre>
 <p>Status of recorded, but not uploaded footage is reported in <code>state.afu</code> dictionary of device status.</p>
-<h1 id='getting-recordings'>Getting Recordings</h1><h2 id='getting-list-of-uploaded-chunks'>Getting List of Uploaded Chunks</h2><pre class="highlight shell tab-shell"><code>curl https://go.avstudio.com/front/api/v2/devices/DEVICEID/thumbnails?from<span class="o">=</span>START&amp;to<span class="o">=</span>END <span class="se">\</span>
+<h1 id='getting-recordings'>Getting Recordings</h1><h2 id='getting-list-of-uploaded-chunks'>Getting List of Uploaded Chunks</h2><pre class="highlight shell tab-shell"><code>curl https://go.epiphancloud.com/front/api/v2/devices/DEVICEID/thumbnails?from<span class="o">=</span>START&amp;to<span class="o">=</span>END <span class="se">\</span>
   -H <span class="s2">"Authorization: Bearer TOKEN"</span>
 
 <span class="c"># Output:</span>
@@ -643,11 +643,11 @@
 </tbody></table>
 <h2 id='downloading-chunks'>Downloading Chunks</h2><pre class="highlight shell tab-shell"><code>
 <span class="c"># Getting url of the first chunk from the range</span>
-<span class="nv">url</span><span class="o">=</span><span class="k">$(</span>curl -s <span class="s2">"https://go.avstudio.com/front/api/v2/devices/DEVICEID/thumbnails?from=START&amp;to=STOP"</span> <span class="se">\</span>
+<span class="nv">url</span><span class="o">=</span><span class="k">$(</span>curl -s <span class="s2">"https://go.epiphancloud.com/front/api/v2/devices/DEVICEID/thumbnails?from=START&amp;to=STOP"</span> <span class="se">\</span>
  -H <span class="s2">"Authorization: Bearer TOKEN"</span> | jq -r .[0].Url<span class="k">)</span>
 
 <span class="c"># Downloading the chunk</span>
-curl -o <span class="s1">'/tmp/chunk.mp4'</span> <span class="s2">"https://go.avstudio.com/front/api/v2/media/</span><span class="nv">$url</span><span class="s2">"</span> <span class="se">\</span>
+curl -o <span class="s1">'/tmp/chunk.mp4'</span> <span class="s2">"https://go.epiphancloud.com/front/api/v2/media/</span><span class="nv">$url</span><span class="s2">"</span> <span class="se">\</span>
  -H <span class="s2">"Authorization: Bearer TOKEN"</span>
 </code></pre><pre class="highlight python tab-python"><code>
 <span class="c"># Getting url of the first chunk from the range</span>

@@ -1,14 +1,13 @@
 import logging
-import requests
-import time
 import os
+import time
+
+import requests
 from requests_toolbelt.utils import dump
 
-from .avstudio_devices import Devices
 from .exceptions import *
 
-
-class APIAccess2(object):
+class APIAccess(object):
     _host = None
     _cookies = {}
     _headers = None
@@ -29,7 +28,7 @@ class APIAccess2(object):
             return "https://%(host)s/front/api/%(version)s/%(request)s" % request_params
 
     def logger(self):
-        return logging.getLogger("avstudio")
+        return logging.getLogger("epiphancloud")
 
     def dump_request(self, r, request_time=None):
         request_dump = dump.dump_all(r)
@@ -47,11 +46,11 @@ class APIAccess2(object):
             return
 
         if r.status_code == 401:
-            raise AVStudioUnauthorized()
+            raise EpiphanCloudUnauthorized()
         elif r.status_code in range(500, 600):
-            raise AVStudioIsUnavailable(r)
+            raise EpiphanCloudIsUnavailable(r)
         else:
-            raise AVStudioHTTPError(r)
+            raise EpiphanCloudHTTPError(r)
 
     def http_get(self, request):
         start_time = time.time()
@@ -144,13 +143,5 @@ class APIAccess2(object):
         """
         covers: GET /front/api/v1/users/me
         """
+
         return self.http_get("users/me").json()
-
-
-class AVStudioAPI2(object):
-    def __init__(self, host="go.epiphan.cloud"):
-        self.HTTP = APIAccess2(host)
-        self.Devices = Devices(self.HTTP)
-
-    def set_auth_token(self, token):
-        self.HTTP.set_auth_token(token)

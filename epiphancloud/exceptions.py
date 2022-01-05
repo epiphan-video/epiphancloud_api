@@ -1,8 +1,8 @@
-class AVStudioException(Exception):
-    """Base class for AV Studio exceptions"""
+class EpiphanCloudException(Exception):
+    """Base class for Epiphan Cloud exceptions"""
 
 
-class AVStudioHTTPError(AVStudioException):
+class EpiphanCloudHTTPError(EpiphanCloudException):
     """Generic HTTP error (400-s errors)"""
 
     def __init__(self, response):
@@ -10,16 +10,16 @@ class AVStudioHTTPError(AVStudioException):
         self.status_code = response.status_code
 
 
-class AVStudioUnauthorized(AVStudioException):
+class EpiphanCloudUnauthorized(EpiphanCloudException):
     """Invalid auth token"""
 
     def __init__(self):
         self.message = "Unauthorized (the auth token is invalid or was not specified)"
 
 
-class AVStudioIsUnavailable(AVStudioHTTPError):
-    """AV Studio returns 500-s"""
+class EpiphanCloudIsUnavailable(EpiphanCloudHTTPError):
+    """Epiphan Cloud returns 500-s"""
 
     def __init__(self, response):
         super.__init__(response)
-        self.message = "AV Studio " + self.message
+        self.message = "Epiphan Cloud " + self.message

@@ -1,17 +1,17 @@
-# AV Studio API
+# Epiphan Cloud API
 
 This repo contains:
 
-- `/avstudio`: Python wrapper for AV Studio API
+- `/epiphancloud`: Python wrapper for Epiphan Cloud API
 - `/docs`: API reference
 - `/device_api.ipynb`: Python notebook with API tutorial
-- `/device_api.html`: static version of the tutorial ([link](http://htmlpreview.github.io/?https://github.com/epiphan-video/avstudio_api/blob/master/device_api.html))
+- `/device_api.html`: static version of the tutorial ([link](http://htmlpreview.github.io/?https://github.com/epiphan-video/epiphancloud_api/blob/master/device_api.html))
 
 ## Installation
 
 ```
-$ git clone https://github.com/epiphan-video/avstudio_api.git
-$ cd avstudio_api
+$ git clone https://github.com/epiphan-video/epiphancloud_api.git
+$ cd epiphancloud_api
 $ pip install -r requirements.txt
 ```
 
@@ -20,13 +20,13 @@ $ pip install -r requirements.txt
 Jupyter has to be installed.
 
 ```
-$ cd avstudio_api
+$ cd epiphancloud_api
 $ python -m notebook
 ```
 
 ## Documentation
 
-API documentation is available via Github Pages: [https://epiphan-video.github.io/avstudio_api](https://epiphan-video.github.io/avstudio_api/)
+API documentation is available via Github Pages: [https://epiphan-video.github.io/epiphancloud_api](https://epiphan-video.github.io/epiphancloud_api/)
 
 
 ### How to update docs

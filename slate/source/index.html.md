@@ -1,5 +1,5 @@
 ---
-title: AV Studio Developer's Guide
+title: Epiphan Cloud Developer's Guide
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell: cURL
@@ -7,7 +7,7 @@ language_tabs: # must be one of https://git.io/vQNgJ
 #  - javascript
 
 toc_footers:
-  - <a href='https://go.avstudio.com'>avstudio.com</a>
+  - <a href='https://go.epiphancloud.com'>epiphancloud.com</a>
   #- <a href='#'>Sign Up for a Developer Key</a>
   #- <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
 
@@ -19,32 +19,32 @@ search: true
 
 # Introduction
 
-Welcome to the AV Studio API! You can use our API to pair, control and monitor Epiphan devices.
+Welcome to the Epiphan Cloud API! You can use our API to pair, control and monitor Epiphan devices.
 
 We have language bindings in bash and Python. You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
 # Big picture
 
-Each encoder device has a long poll connection to AV Studio and waits for commands. Initially, all devices are *unpaired*, which means that they are not assiciated with any AV Studio account. To pair a device, log in to your AV Studio account and send a pairing command to AV Studio using the pairing code. AV Studio finds the device that has this code and connects your account to it.
+Each encoder device has a long poll connection to Epiphan Cloud and waits for commands. Initially, all devices are *unpaired*, which means that they are not assiciated with any Epiphan Cloud account. To pair a device, log in to your Epiphan Cloud account and send a pairing command to Epiphan Cloud using the pairing code. Epiphan Cloud finds the device that has this code and connects your account to it.
 
 # Authentication
 
 ```python
-from avstudio.avstudio import AVStudioAPI
+from epiphancloud.epiphancloud import EpiphanCloudAPI
 
-api = AVStudioAPI("go.avstudio.com")
+api = EpiphanCloudAPI("go.epiphancloud.com")
 api.login(USERNAME, PASSWORD)
 ```
 
 ```shell
-curl -v https://go.avstudio.com/front/api/v1t/oauth/base/USERNAME?pwd=PASSWORD
+curl -v https://go.epiphancloud.com/front/api/v1t/oauth/base/USERNAME?pwd=PASSWORD
 ```
 
-To login to your AV Studio account, use this code:
+To login to your Epiphan Cloud account, use this code:
 
 ```
 > GET /front/api/v1t/oauth/base/USERNAME?pwd=PASSWORD HTTP/2
-> Host: go.avstudio.com
+> Host: go.epiphancloud.com
 > User-Agent: curl/7.54.0
 > Accept: */*
 >
@@ -53,7 +53,7 @@ To login to your AV Studio account, use this code:
 < date: Fri, 12 Oct 2018 17:43:42 GMT
 < content-type: text/html; charset=utf-8
 < content-length: 91
-< location: https://go.avstudio.com/TEAMID#/scenes
+< location: https://go.epiphancloud.com/TEAMID#/scenes
 < set-cookie: KSESSIONID=KSESSIONID; Path=/; Expires=Sat, 12 Oct 2019 17:43:42 GMT; Max-Age=31536000
 < x-current-team-id: TEAMID
 < strict-transport-security: max-age=15724800; preload
@@ -63,7 +63,7 @@ The successful response has team and session identifiers, which are used in subs
 
 # Getting All Devices
 
-There're two devices in a newly created AV Studio account, let's retrieve them:
+There're two devices in a newly created Epiphan Cloud account, let's retrieve them:
 
 ```python
 devices = api.Devices.get_all()
@@ -76,7 +76,7 @@ for d in devices:
 ```
 
 ```shell
-curl https://go.avstudio.com/front/api/v1t/team/TEAMID/devices \
+curl https://go.epiphancloud.com/front/api/v1t/team/TEAMID/devices \
   -H "Cookie: KSESSIONID=KSESSIONID"
 ```
 
@@ -111,7 +111,7 @@ device = api.Devices.get("demo_0_d3d68f3c-cd3e-4ee6-ab25-4646973c6277")
 ```
 
 ```shell
-curl https://go.avstudio.com/front/api/v1t/team/6ef82053-5bb5-4ba6-9e43-e8565a827b9c/devices/demo_0_d3d68f3c-cd3e-4ee6-ab25-4646973c6277 \
+curl https://go.epiphancloud.com/front/api/v1t/team/6ef82053-5bb5-4ba6-9e43-e8565a827b9c/devices/demo_0_d3d68f3c-cd3e-4ee6-ab25-4646973c6277 \
   -H "Cookie: KSESSIONID=SESSIONID"
 ```
 
@@ -144,17 +144,17 @@ DEVICEID | The ID of the device to retrieve
 
 Let's pair a real device.
 
-### Switching the Webcaster X2 Device to AV Studio Mode
+### Switching the Webcaster X2 Device to Epiphan Cloud Mode
 
 There are two ways to switch modes:
 
 Double press the power button on the device until the LCD screen shows Epiphan logo:
 
-![Swtiching to AV Studio using LCD screen](images/front_screen_pairing_code.jpg "Swtiching to AV Studio using LCD screen")
+![Swtiching to Epiphan Cloud using LCD screen](images/front_screen_pairing_code.jpg "Swtiching to Epiphan Cloud using LCD screen")
 
-Or select AV Studio using a monitor and attached USB mouse:
+Or select Epiphan Cloud using a monitor and attached USB mouse:
 
-![Swtiching to AV Studio using a monitor and a mouse](images/switch_to_avstudio.gif "Swtiching to AV Studio using a monitor and a mouse")
+![Swtiching to Epiphan Cloud using a monitor and a mouse](images/switch_to_epiphancloud.gif "Swtiching to Epiphan Cloud using a monitor and a mouse")
 
 ### Pairing the Device
 
@@ -169,7 +169,7 @@ device_id = r["ID"]
 ```
 
 ```shell
-curl -X POST https://go.avstudio.com/front/api/v1t/team/TEAMID/devices \
+curl -X POST https://go.epiphancloud.com/front/api/v1t/team/TEAMID/devices \
   -H "Cookie: KSESSIONID=SESSIONID" \
   -d '{"DeviceID": "5cf06c29", "Name": "NEW DEVICE"}'
 ```
@@ -195,7 +195,7 @@ api.Devices.run_command(deviceId, "setparam:bitrate=1000")
 ```
 
 ```shell
-curl https://go.avstudio.com/front/api/v1t/team/TEAMID/devices/DEVICEID/task \
+curl https://go.epiphancloud.com/front/api/v1t/team/TEAMID/devices/DEVICEID/task \
  -H "Cookie: KSESSIONID=SESSIONID" \
  --data-binary '{"cmd": "setparam:bitrate=1000"}'
 ```
@@ -213,7 +213,7 @@ api.Devices.get(deviceId)["Telemetry"]["settings"].keys()
 ```
 
 ```shell
-curl https://go.avstudio.com/front/api/v1t/team/TEAMID/devices/DEVICEID \
+curl https://go.epiphancloud.com/front/api/v1t/team/TEAMID/devices/DEVICEID \
 -H "Cookie: KSESSIONID=SESSIONID" \
 | jq '.Telemetry.settings | keys'
 
@@ -240,7 +240,7 @@ api.Devices.run_command(deviceId, "rtmp.start:rtmp://10.1.2.16/live/test")
 ```
 
 ```shell
- curl https://go.avstudio.com/front/api/v1t/team/TEAMID/devices/DEVICEID/task \
+ curl https://go.epiphancloud.com/front/api/v1t/team/TEAMID/devices/DEVICEID/task \
  -H "Cookie: KSESSIONID=SESSIONID" \
  --data-binary '{"cmd": "rtmp.start:rtmp://10.1.2.16/live/test"}'
 ```
@@ -270,7 +270,7 @@ api.Devices.run_command(deviceId, "rtmp.stop")
 ```
 
 ```shell
- curl https://go.avstudio.com/front/api/v1t/team/TEAMID/devices/DEVICEID/task \
+ curl https://go.epiphancloud.com/front/api/v1t/team/TEAMID/devices/DEVICEID/task \
  -H "Cookie: KSESSIONID=SESSIONID" \
  --data-binary '{"cmd": "rtmp.stop"}'
 ```
@@ -284,7 +284,7 @@ api.Devices.run_command(deviceId, "firmware.update")
 ```
 
 ```shell
- curl https://go.avstudio.com/front/api/v1t/team/TEAMID/devices/DEVICEID/task \
+ curl https://go.epiphancloud.com/front/api/v1t/team/TEAMID/devices/DEVICEID/task \
  -H "Cookie: KSESSIONID=SESSIONID" \
  --data-binary '{"cmd": "firmware.update"}'
 ```
@@ -298,7 +298,7 @@ api.Devices.run_command(deviceId, "unpair")
 ```
 
 ```shell
- curl https://go.avstudio.com/front/api/v1t/team/TEAMID/devices/DEVICEID/task \
+ curl https://go.epiphancloud.com/front/api/v1t/team/TEAMID/devices/DEVICEID/task \
  -H "Cookie: KSESSIONID=SESSIONID" \
  --data-binary '{"cmd": "unpair"}'
 ```
